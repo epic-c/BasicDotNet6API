@@ -8,18 +8,14 @@ namespace BasicDotNet6API.Controllers
     [ApiController]
     public class TestsController : ControllerBase
     {
-        private IDI _di;
-
-        public TestsController(IDI dI)
-        {
-            _di = dI;
+        
+        public TestsController()
+        { 
         }
         // Query string
         // ex: https://localhost:44322/api/Tests?id=123
         [HttpGet]
-
         public ActionResult Test() {
-            _di.GetName();
             return Ok(); 
         }
 

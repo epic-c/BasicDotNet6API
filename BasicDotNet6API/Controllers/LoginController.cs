@@ -14,21 +14,20 @@ namespace BasicDotNet6API.Controllers
     {
         private readonly ILogger<LoginController> _logger;
         private readonly JwtHelpers _jwtHelpers;
+        private readonly BasicAuthHelpers basicAuthHelpers;
 
-        public LoginController(ILogger<LoginController> logger, JwtHelpers jwtHelpers) {
+        public LoginController(ILogger<LoginController> logger, JwtHelpers jwtHelpers, BasicAuthHelpers basicAuthHelpers) {
             _logger = logger;
             _jwtHelpers = jwtHelpers;
+            this.basicAuthHelpers = basicAuthHelpers;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public ActionResult<Token> Login() {
-            var authorization =  HttpContext.Request.Headers["Authorization"];
+            var (user, _) = basicAuthHelpers.Parse(HttpContext.Request);
 
-            var userValue = Encoding.UTF8.GetString(Convert.FromBase64String( authorization.ToString()[6..])).Split(":");
-
-            
-            return Ok(new Token() {JwtToken = _jwtHelpers.GenerateToken(userValue[0]) });
+            return Ok(new Token() {JwtToken = _jwtHelpers.GenerateToken(user) });
         }
     }
 }
