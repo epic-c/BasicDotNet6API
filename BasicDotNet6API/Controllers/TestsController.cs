@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace BasicDotNet6API.Controllers
 {
-    //  [Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TestsController : ControllerBase
