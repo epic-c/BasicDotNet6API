@@ -1,8 +1,9 @@
 using BasicDotNet6API;
 using BasicDotNet6API.Helpers;
+using BasicDotNet6API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
-using ReformAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,7 @@ builder.Services
         };
     });
 
+builder.Services.AddTransient<ProblemDetailsFactory, YourBussProblemDetailsFactory>();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -59,6 +61,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler("/error");
 
 app.UseAuthentication();
 app.UseAuthorization();
